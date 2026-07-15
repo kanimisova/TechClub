@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>技家部くすのき祭公式サイト</title>
+<title>技術家庭科部くすのき祭公式</title>
 <meta name="description" content="技術家庭科部くすのき祭公式サイトです。展示紹介、各種リンクボタンを掲載しています。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -335,11 +335,9 @@ img{ max-width:100%; display:block; }
 .works-grid{
   margin-top:52px;
   display:grid;
-  grid-template-columns:repeat(3, 1fr);
+  grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));
   gap:32px;
 }
-@media (max-width:1000px){ .works-grid{ grid-template-columns:repeat(2, 1fr); } }
-@media (max-width:640px){ .works-grid{ grid-template-columns:1fr; } }
 
 .work-card{
   position:relative;
@@ -602,18 +600,14 @@ body.is-loading{ overflow:hidden; }
 
 .hero-bg{
   position:absolute;
-  top:0; left:0; right:0;
-  aspect-ratio:16/9;   /* PCなど広い画面用のデフォルト */
+  top:66px; left:0; right:0;
+  height:clamp(280px, 56vw, 640px);
   z-index:-2;
   overflow:hidden;
   opacity:0;
-  transition:opacity 1.6s ease;
+  transition:opacity 1.6s ease, height .3s ease;
 }
-@media (max-width:860px){
-  .hero-bg{
-    aspect-ratio:9/16;  /* スマホでは縦長比率に切り替え */
-  }
-}
+
 .hero-bg.is-visible{ opacity:1; }
 .hero-bg-video{
   width:100%;
@@ -674,42 +668,6 @@ body.is-loading{ overflow:hidden; }
   transform:scale(1.03);
 }
 
-/* WORKSセクション: 行ごとの背景色 */
-.works-row{ padding:96px 24px; }
-.works-row + .works-row{ padding-top:96px; }
-
-.works-row--navy{
-  background:var(--ink);
-  color:var(--paper);
-}
-.works-row--navy .section-title{ color:var(--paper); }
-.works-row--navy .eyebrow{ color:var(--gold); border-color:var(--gold); }
-
-.works-row--beige{
-  background:var(--paper-soft);
-  color:var(--ink);
-}
-
-/* ベージュ行の中の work-card は明るい配色に上書き */
-.works-row--beige .work-card{
-  background:#fff;
-  border-color:var(--line);
-}
-.works-row--beige .work-title{ color:var(--ink); }
-.works-row--beige .work-status{ color:var(--coral-deep); }
-.works-row--beige .work-meta dt{ color:var(--ink-soft); }
-.works-row--beige .work-meta dd{ color:var(--ink); }
-.works-row--beige .work-lead{ color:var(--ink-soft); }
-.works-row--beige .work-thumb{
-  background:linear-gradient(160deg, rgba(27,31,59,0.06), rgba(27,31,59,0.02));
-}
-.works-row--beige .work-thumb .placeholder-label{ color:var(--ink-soft); }
-.works-row--beige .work-card .link-btn--solid{
-  background:var(--ink); color:var(--paper); border-color:var(--ink);
-}
-.works-row--beige .work-card .link-btn--solid:hover{
-  background:var(--coral-deep); border-color:var(--coral-deep); color:var(--paper);
-}
 
 /* ウィンドウ風ポップアップ */
 body.modal-open{ overflow:hidden; }
@@ -731,15 +689,15 @@ body.modal-open{ overflow:hidden; }
 
 .window-frame{
   position:relative;
-  width:min(900px, 92vw);
-  aspect-ratio:16/10;         /* PC用の縦横比 */
+  width:clamp(320px, 90vw, 900px);
+  height:clamp(420px, 85vh, 800px);
   background:#fff;
   border-radius:var(--radius-m);
   overflow:hidden;
   box-shadow:0 30px 60px rgba(0,0,0,0.35);
   display:flex; flex-direction:column;
   transform:translateY(16px) scale(0.98);
-  transition:transform .35s ease;
+  transition:transform .35s ease, width .3s ease, height .3s ease;
 }
 .window-modal.is-open .window-frame{ transform:translateY(0) scale(1); }
 
@@ -760,26 +718,107 @@ body.modal-open{ overflow:hidden; }
   color:var(--ink-soft);
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
-.window-body{ flex:1; background:#fff; }
-.window-body iframe{ width:100%; height:100%; border:none; }
 
-/* スマホ幅(860px以下)は縦長ウィンドウに切り替え */
-@media (max-width:860px){
-  .window-frame{
-    width:min(380px, 92vw);
-    aspect-ratio:9/16;
-  }
+.window-body{
+  flex:1;
+  background:#fff;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
+/* ポップアップ内のギャラリー */
+.popup-gallery{
+  display:flex;
+  gap:2px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.popup-gallery img{
+  width:100%;
+  flex:0 0 100%;
+  aspect-ratio:5/3;
+  object-fit:cover;
+  scroll-snap-align:start;
+}
+
+.popup-content{ padding:28px; }
+.popup-status{ font-size:11px; color:var(--coral-deep); margin-bottom:6px; }
+
+.popup-title{
+  font-family:var(--font-display);
+  font-size:1.4rem;
+  line-height:1.4;
+  color:var(--ink);
+  margin-bottom:14px;
+}
+.popup-meta{
+  display:grid; grid-template-columns:1fr 1fr; gap:10px 18px;
+  margin-bottom:16px; padding-bottom:16px;
+  border-bottom:1px solid var(--line);
+}
+.popup-meta > div{ display:flex; flex-direction:column; gap:2px; }
+.popup-meta dt{ font-family:var(--font-mono); font-size:10px; color:var(--ink-soft); }
+.popup-meta dd{ margin:0; font-size:13px; color:var(--ink); }
+.popup-lead{ font-size:13.5px; color:var(--ink-soft); margin-bottom:20px; }
+.popup-links{ display:flex; flex-wrap:wrap; gap:10px; }
 
 /* NEWSとSCHEDULE(TIMETABLE)の間の余白を詰める */
 #news{ padding-bottom:20px; }
 #schedule{ padding-top:20px; }
 
-@media (max-width:640px){
-  .works-row{
-    padding:32px 20px;
-  }
+.popup-video{
+  aspect-ratio:16/9;
+  margin:16px 0 20px;
+  border-radius:var(--radius-s);
+  overflow:hidden;
+  background:#000;
+}
+.popup-video iframe{
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
+}
+
+.nowrap{ white-space:nowrap; }
+
+.work-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:6px 0 4px;
+}
+.tag-alert{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-size:10px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(229,62,62,0.12);
+  color:#E53E3E;
+  border:1px solid rgba(229,62,62,0.4);
+}
+.tag-alert::before{
+  content:"!";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:12px; height:12px;
+  border-radius:50%;
+  background:#E53E3E;
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+}
+
+.popup-schedule{
+  margin-bottom:20px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+}
+.popup-schedule .schedule-days{
+  grid-template-columns:1fr; /* ポップアップ内は縦積みにする(横幅が狭いため) */
 }
 
 </style>
@@ -825,7 +864,7 @@ body.modal-open{ overflow:hidden; }
   <section class="hero">
     <div class="hero-bg" id="heroBg" aria-hidden="true">
       <video autoplay muted loop playsinline class="hero-bg-video">
-        <source src="assets/ドローン映像.mp4" type="video/mp4">
+        <source src="assets/A1.mp4" type="video/mp4">
       </video>
     </div>
     <div class="hero-deco" aria-hidden="true">
@@ -836,11 +875,7 @@ body.modal-open{ overflow:hidden; }
       <span class="hero-title-jp">匠のその先へ</span>
       <span class="hero-title-en mono">技術家庭科部くすのき祭公式サイト</span>
     </h1>
-    <p class="hero-lead">ものづくりへの好奇心から始まる創作。
-
-アイデアを形にするために考え、試し、失敗し、また挑戦する。
-
-作業に没頭する時間も、笑い合う時間も、すべてがかけがえのない青春。ここに、「好き」を本気で追いかける仲間がいます。</p>
+    <p class="hero-lead">ものづくりへの好奇心から始まる創作。<br>アイデアを形にするために<wbr>考え、試し、失敗し、また挑戦する。<br>作業に没頭する時間も、笑い合う時間も、すべてがかけがえのない青春。<br>ここに、「好き」を本気で追いかける仲間がいます。</p>
     <a href="#profile" class="scroll-down">
       <span>Scroll</span>
       <i></i>
@@ -850,12 +885,7 @@ body.modal-open{ overflow:hidden; }
   <!-- プロフィール -->
   <section class="section profile-section" id="profile">
     <div class="section-inner two-col">
-      <div class="profile-visual" aria-hidden="true">
-        <div class="profile-frame">
-          <img src="assets/NOIMAGE.png" alt="サークル名のプロフィール画像">
-        </div>
-        <span class="sticker sticker--pink mono">School club</span>
-      </div>
+      
       <div class="profile-body">
         <p class="eyebrow mono">01 / Profile</p>
         <h2 class="section-title">技術家庭科部<ruby><rt></rt></ruby><span class="mono"></span></h2>
@@ -865,7 +895,7 @@ body.modal-open{ overflow:hidden; }
           <li>工作班</li>
         </ul>
         <p class="profile-text">
-          紹介文をここに入れます。経歴、得意分野、活動のきっかけなど、読み手に伝えたいプロフィール情報を2〜4文程度でまとめると読みやすくなります。
+          技術家庭科部には「レゴ班」「鉄道班」「工作班」の3つの班があり、プログラミング、ロボット作り、鉄道模型、編み物、工作、お菓子作りなど様々な「ものづくり」をしています。
         </p>
 
         <!-- ▼ SNS等 各種リンクボタン(メイン) -->
@@ -875,235 +905,20 @@ body.modal-open{ overflow:hidden; }
           <a href="#" class="link-btn" data-external></span>YouTube</a>
         </div>
 
-        <a href="#" class="text-link mono">プロフィール詳細ページへ →</a>
+        <a href="#" class="text-link mono">部活動詳細ページへ →</a>
       </div>
     </div>
   </section>
 
 <!-- 展示紹介ウィジェット (WORKS) -->
-<section class="works-section" id="works">
+ <section class="section works-section" id="works">
 
-  <!-- 1段目: ネイビー -->
   <div class="works-row works-row--navy">
     <div class="section-inner">
       <p class="eyebrow mono center">02 / Events</p>
       <h2 class="section-title center">くすのき祭展示紹介</h2>
 
-      <div class="works-grid">
-        <!-- 作品1〜3(既存の3枚をここに移動) -->
-        <article class="work-card">
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/宇宙エレ講座エンブレム.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">#プログラミング体験 #宇宙エレ</p>
-            <h3 class="work-title">プログラミング講座</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>小学4年生以上</dd></div>
-              <div><dt>ジャンル</dt><dd>ワークショップ</dd></div>
-              <div><dt>開催場所</dt><dd>3階 Macルーム</dd></div>
-              <div><dt>担当</dt><dd>レゴ班</dd></div>
-            </dl>
-            <p class="work-lead">生徒が教えるプログラミング講座です。宇宙エレベーターのプログラミングを体験することができます。初めての方でも楽しめる初心者向け講座です。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>詳細はこちら</a>
-          </div>
-        </article>
-
-        <!-- 班ウィジェット 2 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--live mono">LIVE</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">#ロボサカ2026 #体育館企画</p>
-            <h3 class="work-title">ロボットサッカー</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>全年齢</dd></div>
-              <div><dt>ジャンル</dt><dd>観戦</dd></div>
-              <div><dt>開催場所</dt><dd>第一体育館</dd></div>
-              <div><dt>担当</dt><dd>レゴ班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文やキャッチコピーをここに入れます。複数プラットフォーム展開の場合はボタンを並べて配置できます。</p>
-            <div class="btn-row">
-              <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>詳細はこちら</a>
-              <a href="https://www.youtube.com" class="link-btn link-btn--solid" data-external>LIVE配信へ</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- 班ウィジェット 3 -->
-        <article class="work-card">
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">#作品展示 #常設展示</p>
-            <h3 class="work-title">作品展示</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>全年齢</dd></div>
-              <div><dt>ジャンル</dt><dd>常設展示</dd></div>
-              <div><dt>開催場所</dt><dd>3階 Macルーム</dd></div>
-              <div><dt>担当</dt><dd>レゴ班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文やキャッチコピーをここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>作品一覧</a>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- 2段目: ベージュ -->
-  <div class="works-row works-row--beige">
-    <div class="section-inner">
-      <div class="works-grid">
-        <!-- 作品4 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルD</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
-
-        <!-- 作品5 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルD</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
-
-        <!-- 作品6 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルD</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- 3段目: ネイビー -->
-  <div class="works-row works-row--navy">
-    <div class="section-inner">
-      <div class="works-grid">
-        <!-- 作品7 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルG</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
-
-        <!-- 作品8 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルG</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
-
-        <!-- 作品9 -->
-        <article class="work-card">
-          <span class="work-badge work-badge--new mono">NEW</span>
-          <div class="work-thumb">
-            <a href="https://kanimisova.github.io/TechClub/" data-window-link>
-              <img src="assets/NOIMAGE.png" alt=""宇宙エレベーターのキービジュアル"">
-            </a>
-          </div>
-          <div class="work-body">
-            <p class="work-status mono">Coming Soon</p>
-            <h3 class="work-title">作品タイトルG</h3>
-            <dl class="work-meta">
-              <div><dt>対象年齢</dt><dd>あああ</dd></div>
-              <div><dt>ジャンル</dt><dd>ああああ</dd></div>
-              <div><dt>開催場所</dt><dd>ああああ</dd></div>
-              <div><dt>担当</dt><dd>班</dd></div>
-            </dl>
-            <p class="work-lead">作品の紹介文をここに入れます。</p>
-            <a href="https://kanimisova.github.io/TechClub/" class="link-btn link-btn--solid" data-window-link>製品ページへ</a>
-          </div>
-        </article>
+      <div class="works-grid" id="worksGrid"></div>
 
       </div>
     </div>
@@ -1170,7 +985,7 @@ body.modal-open{ overflow:hidden; }
         </div>
     </div>
 
-      <!-- ▼ フッターから移動したリンクボタン -->
+      <!-- ▼ リンクボタン -->
       <div class="cta-links">
         <p class="eyebrow mono center">Link</p>
         <div class="link-buttons link-buttons--center">
@@ -1200,9 +1015,7 @@ body.modal-open{ overflow:hidden; }
       <span class="window-dot window-dot--green"></span>
       <p class="window-url mono" id="windowUrlLabel"></p>
     </div>
-    <div class="window-body">
-      <iframe id="windowIframe" src="" title="プレビュー"></iframe>
-    </div>
+    <div class="window-body" id="windowBody"></div>
   </div>
 </div>
 
@@ -1215,7 +1028,7 @@ body.modal-open{ overflow:hidden; }
     <nav class="footer-nav">
     </nav>
 
-    <p class="copyright mono">&copy; TECHCLUB</p>
+    <p class="copyright mono">TECH CLUB</p>
   </div>
 
   <button class="to-top" id="toTop" aria-label="ページトップへ戻る">↑</button>
@@ -1258,8 +1071,302 @@ window.addEventListener('load', () => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ============================================
+   作品データ(ここだけ編集すれば、カード表示・ポップアップ両方に反映されます)
+============================================ */
+const worksData = [
+  {
+    id: 'work-a',
+    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: '',
+    statusTimeline: [
+      { from: null, label: '11時15分から整理券配布開始' },
+      { from: '2026-10-17T00:00', label: '11時15分から整理券配布開始' },
+      { from: '2026-10-17T11:15', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-17T11:30', label: '12時15分から整理券配布開始' },
+      { from: '2026-10-17T12:15', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-17T12:30', label: '13時15分から整理券配布開始' },
+      { from: '2026-10-17T13:15', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-17T13:30', label: '14時15分から整理券配布開始' },
+      { from: '2026-10-17T14:15', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-17T14:30', label: '本日の整理券配布は終了しました。' },
+      { from: '2026-10-18T00:00', label: '10時45分から整理券配布開始' },
+      { from: '2026-10-18T10:45', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-18T11:00', label: '11時45分から整理券配布開始' },
+      { from: '2026-10-18T11:45', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-18T12:00', label: '12時45分から整理券配布開始' },
+      { from: '2026-10-18T12:45', label: '整理券配布中 (先着順のため既に無い可能性があります。' },
+      { from: '2026-10-18T13:00', label: '本日の整理券配布は終了しました。' },
 
+    ],
+    title: '宇宙エレベーターロボットプログラミング講座',
+    titleDisplay: '宇宙エレベーターロボット<br>プログラミング講座',   // 表示用(改行OK)
+    tags: ['整理券が必要です。'],              // 複数付けたい場合は ['要予約', '数量限定'] のように
+    thumb: 'assets/宇宙エレ講座エンブレム.png',
+    meta: [
+      { label: '対象年齢', value: '小学校4~6年生' },
+      { label: 'ジャンル', value: '体験講座' },
+      { label: '開催場所', value: '3階 Macルーム' },
+      { label: '整理券配布場所', value: '3階 Macルーム前' },
+    ],
+    leadCard: '生徒が教える初心者向けプログラミング講座です。',   // カード一覧(短め)
+    leadPopup: '生徒が教えるプログラミング講座です。宇宙エレベーターのプログラミングを体験することができます。初めての方でも楽しめる講座です。',  // ポップアップ(長め)
+    gallery: ['assets/宇宙エレ講座エンブレム.png'],
+    video: null,              // YouTube埋め込みURL。無ければnull
+    links: [],
+    schedule: [
+      {
+        day: 'DAY 1',
+        date: '10.17(Sat)',
+        items: [
+          { time: '11:15', label: '11:30の回の整理券配布開始' },
+          { time: '11:30', label: '宇宙エレ講座①' },
+          { time: '12:15', label: '12:30の回の整理券配布開始' },
+          { time: '12:30', label: '宇宙エレ講座②' },
+          { time: '13:15', label: '13:30の回の整理券配布開始' },
+          { time: '13:30', label: '宇宙エレ講座③' },
+          { time: '14:15', label: '14:30の回の整理券配布開始' },
+          { time: '14:30', label: '宇宙エレ講座④' },
+        ]
+      },
+      {
+        day: 'DAY 2',
+        date: '10.18(Sun)',
+        items: [
+          { time: '10:45', label: '11:00の回の整理券配布開始' },
+          { time: '11:00', label: '宇宙エレ講座①' },
+          { time: '11:45', label: '12:00の回の整理券配布開始' },
+          { time: '12:00', label: '宇宙エレ講座②' },
+          { time: '12:45', label: '13:00の回の整理券配布開始' },
+          { time: '13:00', label: '宇宙エレ講座③' },
+      ]
+      }
+    ]
+  },
+
+  {
+    id: 'work-b',
+    badge: 'live',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: 'LIVE',
+    statusTimeline: [
+      { from: null, label: '10時スタート' },
+      { from: '2026-10-17T11:00', label: '本日は終了しました。' },
+      { from: '2026-10-18T00:00', label: '9時30分スタート' },
+      { from: '2026-10-18T10:30', label: '本日は終了しました。' },
+    ],
+    title: 'ロボットサッカー',
+    titleDisplay: 'ロボットサッカー',   // 表示用(改行OK)
+    thumb: 'assets/ロボサカ1.jpg',
+    meta: [
+      { label: '対象年齢', value: '全年齢' },
+      { label: 'ジャンル', value: '観戦' },
+      { label: '開催場所', value: '第一体育館' },
+    ],
+    leadCard: '選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
+    leadPopup: '何度も試行錯誤を繰り返して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください。',  // ポップアップ(長め)
+    gallery: ['assets/ロボサカ1.jpg', 'assets/ロボサカ2.jpg','assets/ロボサカ3.jpg', 'assets/ロボサカ4.jpg','assets/ロボサカ5.jpg'],
+    video: "https://www.youtube.com/embed/39xz1R-dz3A?autoplay=0",              // YouTube埋め込みURL。無ければnull
+    links: [
+      { label: '配信はこちら', url: 'https://www.youtube.com/watch?v=39xz1R-dz3A' }
+    ],
+    schedule: [
+      {
+        day: 'DAY 1',
+        date: '10.17(Sat)',
+        items: [
+          { time: '10:00', label: '開始' },
+          { time: '11:00', label: '終了' },
+        ]
+      },
+      {
+        day: 'DAY 2',
+        date: '10.18(Sun)',
+        items: [
+          { time: '9:30', label: '開始' },
+          { time: '10:30', label: '終了' },
+      ]
+      }
+    ]
+  },
+
+  {
+    id: 'work-c',
+    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: '',
+    statusTimeline: [
+      { from: null, label: '常設展示' },
+    ],
+    title: 'レゴ班作品展示',
+    thumb: 'assets/レゴ班作品展示.png',
+    meta: [
+      { label: '対象年齢', value: '全年齢' },
+      { label: 'ジャンル', value: '展示' },
+      { label: '開催場所', value: '3階 Macルーム' },
+    ],
+    leadCard: '部員が作ったレゴ作品を展示しています。',   // カード一覧(短め)
+    leadPopup: '部員が作ったレゴ作品を展示しています。',  // ポップアップ(長め)
+    gallery: [],
+    video: null,              // YouTube埋め込みURL。無ければnull
+    links: [
+    ],
+    schedule: []
+  },
+
+  {
+    id: 'work-',
+    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: '',
+    statusTimeline: [
+      { from: null, label: '' },
+    ],
+    title: '',
+    thumb: '',
+    meta: [
+      { label: '対象年齢', value: '' },
+      { label: 'ジャンル', value: '' },
+      { label: '開催場所', value: '' },
+    ],
+    leadCard: '',   // カード一覧(短め)
+    leadPopup: '',  // ポップアップ(長め)
+    gallery: [],
+    video: null,              // YouTube埋め込みURL。無ければnull
+    links: [
+      { label: '詳細はこちら', url: '#' }
+    ],
+    schedule: []
+  },
+  
+  // ↓ 同じ形式で追加
+];
+
+/* 現在時刻に応じたステータス文言を取得 */
+function getCurrentStatus(item) {
+  const now = new Date();
+  let current = item.statusTimeline[0]?.label ?? '';
+
+  item.statusTimeline.forEach((entry) => {
+    if (entry.from === null) return;
+    const entryDate = new Date(entry.from);
+    if (now >= entryDate) current = entry.label;
+  });
+
+  return current;
+}
+
+/* バッジのクラス名を種類ごとに変換 */
+function badgeClass(type) {
+  if (type === 'new') return 'work-badge--new';
+  if (type === 'released') return 'work-badge--released';
+  if (type === 'live') return 'work-badge--live';
+  return '';
+}
+
+/* カード一覧(works-grid)を生成 */
+function renderWorksGrid() {
+  const grid = document.getElementById('worksGrid');
+  if (!grid) return;
+
+  grid.innerHTML = worksData.map((item) => `
+    <article class="work-card">
+      ${item.badge ? `<span class="work-badge ${badgeClass(item.badge)} mono">${item.badgeText}</span>` : ''}
+      <div class="work-thumb">
+        <a href="#" data-window-target="${item.id}">
+          <img src="${item.thumb}" alt="${item.title}のキービジュアル">
+        </a>
+      </div>
+      <div class="work-body">
+        <p class="work-status mono">${getCurrentStatus(item)}</p>
+        <h3 class="work-title">${item.titleDisplay || item.title}</h3>
+        <dl class="work-meta">
+          ${item.meta.slice(0, 4).map((m) => `<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`).join('')}
+        </dl>
+        ${item.tags && item.tags.length ? `
+          <div class="work-tags">
+            ${item.tags.map((t) => `<span class="tag-alert mono">${t}</span>`).join('')}
+          </div>` : ''}
+        <p class="work-lead">${item.leadCard}</p>
+        <a href="#" class="link-btn link-btn--solid" data-window-target="${item.id}">詳細はこちら</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* ポップアップの中身を生成 */
+function renderPopupContent(item) {
+  return `
+    <div class="popup-gallery">
+      ${item.gallery.map((src) => `<img src="${src}" alt="${item.title}の画像">`).join('')}
+    </div>
+    <div class="popup-content">
+      <p class="popup-status mono">${getCurrentStatus(item)}</p>
+      <h3 class="popup-titleDisplay">${item.title}</h3>
+      ${item.video ? `
+        <div class="popup-video">
+          <iframe src="${item.video}" title="${item.title} 動画" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>` : ''}
+      <dl class="popup-meta">
+        ${item.meta.map((m) => `<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`).join('')}
+      </dl>
+      ${item.tags && item.tags.length ? `
+        <div class="work-tags">
+          ${item.tags.map((t) => `<span class="tag-alert mono">${t}</span>`).join('')}
+        </div>` : ''}
+      <p class="popup-lead">${item.leadPopup}</p>
+
+      ${item.schedule && item.schedule.length ? `
+        <div class="popup-schedule">
+          <h4 class="widget-title mono">SCHEDULE</h4>
+          <div class="schedule-days">
+            ${item.schedule.map((day) => `
+              <div class="schedule-day">
+                <p class="schedule-day-label mono">${day.day}<span>${day.date}</span></p>
+                <ul class="schedule-list">
+                  ${day.items.map((i) => `<li><time class="mono">${i.time}</time><p>${i.label}</p></li>`).join('')}
+                </ul>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="popup-links">
+        ${item.links.map((l) => `<a href="${l.url}" class="link-btn link-btn--solid" data-external>${l.label}</a>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* これらは DOMContentLoaded の外、ファイルの上のほうにある必要があります */
+const windowModal = document.getElementById('windowModal');
+const windowBody = document.getElementById('windowBody');
+const windowUrlLabel = document.getElementById('windowUrlLabel');
+
+function openWindowModal(workId) {
+  const item = worksData.find((w) => w.id === workId);
+  if (!windowModal || !windowBody || !item) return;
+
+  windowBody.innerHTML = renderPopupContent(item);
+  windowUrlLabel.textContent = `works/${item.title}`;
+
+  windowModal.classList.add('is-open');
+  windowModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+
+  windowBody.querySelectorAll('a[data-external]').forEach((link) => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+}
+
+function closeWindowModal() {
+  if (!windowModal) return;
+  windowModal.classList.remove('is-open');
+  windowModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderWorksGrid();   // ← これを追加
   /* ------------------------------------------------------------
      1. 背景の星フィールドを生成
   ------------------------------------------------------------ */
@@ -1376,41 +1483,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealTargets.forEach((el) => observer.observe(el));
   }
-});
 
-/* ウィンドウ風ポップアップ */
-const windowModal = document.getElementById('windowModal');
-const windowIframe = document.getElementById('windowIframe');
-const windowUrlLabel = document.getElementById('windowUrlLabel');
-
-function openWindowModal(url) {
-  if (!windowModal || !windowIframe) return;
-  windowIframe.src = url;
-  windowUrlLabel.textContent = url;
-  windowModal.classList.add('is-open');
-  windowModal.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('modal-open');
-}
-function closeWindowModal() {
-  if (!windowModal || !windowIframe) return;
-  windowModal.classList.remove('is-open');
-  windowModal.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('modal-open');
-  setTimeout(() => { windowIframe.src = ''; }, 300);
-}
-
-document.querySelectorAll('[data-window-link]').forEach((el) => {
-  el.addEventListener('click', (e) => {
-    e.preventDefault();
-    const url = el.getAttribute('href');
-    if (url && url !== '#') openWindowModal(url);
+  document.querySelectorAll('[data-window-target]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      openWindowModal(el.getAttribute('data-window-target'));
+    });
   });
-});
-document.querySelectorAll('[data-window-close]').forEach((el) => {
-  el.addEventListener('click', closeWindowModal);
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeWindowModal();
+  document.querySelectorAll('[data-window-close]').forEach((el) => {
+    el.addEventListener('click', closeWindowModal);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeWindowModal();
+  });
+
 });
 
 </script>
