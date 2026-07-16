@@ -29,7 +29,7 @@
   --font-body:    "Zen Kaku Gothic New", sans-serif;
   --font-mono:    "Space Mono", monospace;
 
-  --container: 1080px;
+  --container: 1200px;
   --radius-s: 6px;
   --radius-m: 14px;
   --radius-l: 28px;
@@ -823,6 +823,31 @@ body.modal-open{ overflow:hidden; }
   grid-template-columns:1fr; /* ポップアップ内は縦積みにする(横幅が狭いため) */
 }
 
+.hero-bg-video--sp{ display:none; }
+
+@media (max-width:640px){
+  .hero-bg-video--pc{ display:none; }
+  .hero-bg-video--sp{ display:block; }
+}
+
+@media (max-width:640px){
+  .hero-bg{
+    top:66px;  /* ← スマホでの実測値に置き換えてください */
+  }
+}
+
+@media (max-width:640px){
+  .hero-bg{
+    height:clamp(480px, 130vw, 480px);  /* 9:16に近い、縦長用の高さ計算 */
+  }
+}
+
+@media (min-width:1200px){
+  body{
+    font-size:17.5px;  /* 標準の16px → 17.5pxに拡大(お好みで調整) */
+  }
+}
+
 </style>
 </head>
 <body>
@@ -865,10 +890,13 @@ body.modal-open{ overflow:hidden; }
 
   <section class="hero">
     <div class="hero-bg" id="heroBg" aria-hidden="true">
-      <video autoplay muted loop playsinline class="hero-bg-video">
-        <source src="assets/A1.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--pc">
+        <source src="assets/A1-pc.mp4" type="video/mp4">
       </video>
-    </div>
+      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--sp">
+        <source src="assets/A1-sp.mp4" type="video/mp4">
+      </video>
+</div>
     <div class="hero-deco" aria-hidden="true">
       <svg viewBox="0 0 200 200" class="hero-blob"><path d="M45,-59.4C57.6,-49.7,65.4,-33.6,68.7,-16.7C72,0.2,70.8,17.9,63.1,32.6C55.4,47.3,41.2,59,24.9,65.9C8.6,72.8,-9.8,74.8,-26.4,69.6C-43,64.4,-57.7,52,-65.8,36.4C-73.9,20.8,-75.4,2,-71.1,-14.9C-66.8,-31.8,-56.7,-46.8,-43,-56.6C-29.3,-66.4,-14.7,-71,1.6,-73.1C17.8,-75.2,35.5,-69.1,45,-59.4Z" transform="translate(100 100)"/></svg>
     </div>
