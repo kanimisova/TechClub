@@ -848,6 +848,49 @@ body.modal-open{ overflow:hidden; }
   }
 }
 
+.map-widget{
+  margin-top:52px;
+  margin-bottom:40px;
+  max-width:1000px;   /* 820px → 1000pxに拡大 */
+  margin-left:auto;
+  margin-right:auto;
+}
+.map-container{
+  position:relative;  /* ← 追加 */
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:var(--radius-l);
+  overflow:hidden;
+  background:#05010f;
+  border:1px solid rgba(0,240,255,0.4);
+  box-shadow:0 0 24px rgba(0,240,255,0.15), inset 0 0 40px rgba(0,0,0,0.6);
+  cursor:grab;
+}
+.map-container:active{ cursor:grabbing; }
+.map-hint{
+  text-align:center;
+  font-size:11px;
+  color:var(--ink-soft);
+  margin-top:12px;
+}
+
+.map-hint-overlay{
+  position:absolute;
+  top:5%; transform:translate(-50%,-50%);
+  left:50%;
+  transform:translateX(-50%);
+  font-size:11px;
+  color:#fff;
+  padding:8px 18px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.3);
+  pointer-events:none;
+  z-index:5;
+  opacity:1;
+  transition:opacity 0.5s ease;
+}
+
 </style>
 </head>
 <body>
@@ -905,7 +948,7 @@ body.modal-open{ overflow:hidden; }
       <span class="hero-title-jp">匠のその先へ</span>
       <span class="hero-title-en mono">技術家庭科部くすのき祭公式サイト</span>
     </h1>
-    <p class="hero-lead">ものづくりへの好奇心から始まる創作。アイデアを形にするために考え、試し、失敗し、また挑戦する。作業に没頭する時間も、笑い合う時間も、すべてがかけがえのない青春。<br>ここに、「好き」を本気で追いかける仲間がいます。</p>
+    <p class="hero-lead">ものづくりへの好奇心から始まる創作。<br>アイデアを形にするために考え、試し、失敗し、また挑戦する。作業に没頭する時間も、笑い合う時間も、すべてがかけがえのない青春。<br>ここに、「好き」を本気で追いかける仲間がいます。</p>
     <a href="#profile" class="scroll-down">
       <span>Scroll</span>
       <i></i>
@@ -917,7 +960,7 @@ body.modal-open{ overflow:hidden; }
     <div class="section-inner two-col">
       
       <div class="profile-body">
-        <p class="eyebrow mono">01 / Profile</p>
+        <p class="eyebrow mono">Profile</p>
         <h2 class="section-title">技術家庭科部<ruby><rt></rt></ruby><span class="mono"></span></h2>
         <ul class="role-list">
           <li>レゴ班</li>
@@ -943,9 +986,19 @@ body.modal-open{ overflow:hidden; }
 <!-- 展示紹介ウィジェット (WORKS) -->
  <section class="section works-section" id="works">
 
+  <div class="section-inner">
+    <p class="eyebrow mono center">Map</p>
+    <h2 class="section-title center">校内マップ</h2>
+
+    <div class="map-widget">
+      <div id="mapContainer" class="map-container">
+        <p class="map-hint-overlay mono" id="mapHint">ドラッグで回転できます</p>
+      </div>
+    </div>
+
   <div class="works-row works-row--navy">
     <div class="section-inner">
-      <p class="eyebrow mono center">02 / Events</p>
+      <p class="eyebrow mono center">Events</p>
       <h2 class="section-title center">くすのき祭展示紹介</h2>
 
       <div class="works-grid" id="worksGrid"></div>
@@ -959,13 +1012,14 @@ body.modal-open{ overflow:hidden; }
   <!-- コンテンツ紹介ウィジェット: NEWS / トピックス -->
   <section class="section news-section" id="news">
     <div class="section-inner">
-      <p class="eyebrow mono center">03 / News</p>
+      <p class="eyebrow mono center">News</p>
       <h2 class="section-title center">お知らせ</h2>
 
       <div class="widget-single">
         <div class="widget news-widget">
           <h3 class="widget-title mono">NEWS</h3>
           <ul class="news-list">
+            <li><time class="mono" datetime="2026-07-19">2026.07.19</time><span class="news-tag mono">Update</span>校内マップを追加しました。</li>
             <li><time class="mono" datetime="2026-07-11">2026.07.11</time><span class="news-tag mono">Update</span>ホームページを開設しました。</li>
           </ul>
           <a href="#" class="text-link mono">お知らせ一覧へ →</a>
@@ -976,44 +1030,6 @@ body.modal-open{ overflow:hidden; }
 
 <!-- SCHEDULE -->
 <section class="section schedule-section" id="schedule">
-  <div class="section-inner">
-    <p class="eyebrow mono center">04 / Timetable</p>
-    <h2 class="section-title center">タイムテーブル</h2>
-
-    <div class="widget-single widget-single--wide">
-        <!-- グッズ / スタンプ紹介 ウィジェット -->
-        <!-- スケジュール ウィジェット -->
-        <div class="widget schedule-widget">
-          <h3 class="widget-title mono">TIMETABLE</h3>
-          <div class="schedule-days">
-        
-            <div class="schedule-day">
-              <p class="schedule-day-label mono">DAY 1<span>10.17(Sat)</span></p>
-              <ul class="schedule-list">
-                <li><time class="mono">9:30</time><p>開場</p></li>
-                <li><time class="mono">10:00</time><p>ロボットサッカー</p></li>
-                <li><time class="mono">11:30</time><p>宇宙エレ講座①</p></li>
-                <li><time class="mono">12:30</time><p>宇宙エレ講座②</p></li>
-                <li><time class="mono">13:30</time><p>宇宙エレ講座③</p></li>
-                <li><time class="mono">14:30</time><p>宇宙エレ講座④</p></li>
-                <li><time class="mono">15:30</time><p>1日目終了</p></li>
-              </ul>
-            </div>
-        
-            <div class="schedule-day">
-              <p class="schedule-day-label mono">DAY 2<span>10.18(Sun)</span></p>
-              <ul class="schedule-list">
-                <li><time class="mono">9:00</time><p>開場</p></li>
-                <li><time class="mono">9:30</time><p>ロボットサッカー</p></li>
-                <li><time class="mono">11:00</time><p>宇宙エレ講座①</p></li>
-                <li><time class="mono">12:00</time><p>宇宙エレ講座②</p></li>
-                <li><time class="mono">13:00</time><p>宇宙エレ講座③</p></li>
-                <li><time class="mono">14:00</time><p>2日目終了</p></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-    </div>
 
       <!-- ▼ リンクボタン -->
       <div class="cta-links">
@@ -1022,12 +1038,6 @@ body.modal-open{ overflow:hidden; }
           <a href="#" class="link-btn" data-external></span>X (Twitter)</a>
           <a href="#" class="link-btn" data-external></span>Instagram</a>
           <a href="https://www.youtube.com/watch?v=gTEdGXhTDfI" class="link-btn" data-external></span>YouTube</a>
-        </div>
-
-        <p class="eyebrow mono center">Related</p>
-        <div class="link-buttons link-buttons--center">
-          <a href="#" class="link-btn" data-external>aaa A</a>
-          <a href="#" class="link-btn" data-external>bbb B</a>
         </div>
       </div>
     </div>
@@ -1058,7 +1068,7 @@ body.modal-open{ overflow:hidden; }
     <nav class="footer-nav">
     </nav>
 
-    <p class="copyright mono">TECH CLUB</p>
+    <p class="copyright mono">製作：技術家庭科部</p>
   </div>
 
   <button class="to-top" id="toTop" aria-label="ページトップへ戻る">↑</button>
@@ -1192,9 +1202,9 @@ const worksData = [
       { label: 'ジャンル', value: '観戦' },
       { label: '開催場所', value: '第一体育館' },
     ],
-    leadCard: '試行錯誤しながら作ったサッカーロボットで試合をします。選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
-    leadPopup: '何度も試行錯誤を繰り返して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください。',  // ポップアップ(長め)
-    gallery: ['assets/ロボサカ1.jpg', 'assets/ロボサカ2.jpg'],
+    leadCard: '試行錯誤して作ったサッカーロボットで試合をします。選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
+    leadPopup: '試行錯誤して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください。',  // ポップアップ(長め)
+    gallery: ['assets/ロボサカ2.jpg', 'assets/ロボサカ1.jpg'],
     video: null,              // YouTube埋め込みURL。無ければnull
     links: [
     ],
@@ -1232,8 +1242,8 @@ const worksData = [
       { label: 'ジャンル', value: '展示' },
       { label: '開催場所', value: '3階 Macルーム' },
     ],
-    leadCard: '部員が作ったレゴ作品を展示しています。',   // カード一覧(短め)
-    leadPopup: '部員が作ったレゴ作品を展示しています。',  // ポップアップ(長め)
+    leadCard: '部員が作った作品を展示しています。',   // カード一覧(短め)
+    leadPopup: '主にレゴ班の部員が作ったレゴ作品を展示しています。組み立てやプログラムに工夫した作品を今年もたくさん展示しています。',  // ポップアップ(長め)
     gallery: ['assets/レゴ班作品展示.png'],
     video: null,              // YouTube埋め込みURL。無ければnull
     links: [
@@ -1529,5 +1539,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="js/map.js"></script>
+
 </body>
 </html>
