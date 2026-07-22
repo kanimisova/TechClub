@@ -28,6 +28,11 @@ if (container) {
   const POLAR_MIN = 0.001;
   const POLAR_MAX = Math.PI / 2 - 0.05;
 
+  let baseRadius = 8;   // ← 追加: モデルサイズから計算される基準の距離
+  let zoomFactor = 1;    // ← 追加: ズームの倍率(1が標準)
+  const ZOOM_MIN = 0.4;   // どこまで寄れるか
+  const ZOOM_MAX = 2.2;   // どこまで引けるか
+
   function updateCamera() {
     camera.position.x = target.x + radius * Math.sin(polarAngle) * Math.sin(angle);
     camera.position.z = target.z + radius * Math.sin(polarAngle) * Math.cos(angle);
@@ -39,6 +44,7 @@ if (container) {
   /* ---- ラベル用の変数(共通の場所で定義) ---- */
   let roomLabelElements = [];
   let roomMeshes = [];   // ← 追加
+  let roomVisibleStates = [];   // ← 追加: 各部屋が「表示されるべきか」を記録
 
   /* ---- モデル読み込み ---- */
   const loader = new GLTFLoader();
@@ -49,16 +55,17 @@ if (container) {
     const center = box.getCenter(new THREE.Vector3());
     target.copy(center);
     const size = box.getSize(new THREE.Vector3()).length();
-    radius = size * 0.75;
+    baseRadius = size * 0.75;
+    radius = baseRadius * zoomFactor;
     updateCamera();
 
     scene.fog = new THREE.Fog(0x000000, radius * 1.5, radius * 4);
 
     const roomTargets = [];
     const roomNameMap = {
-      '101': '3階 Macルーム',
+      '101': '3F Macルーム',
       '205': '第一体育館',
-      '305': '3階 3-5教室',
+      '305': '3F 3-5教室',
     };
 
     model.traverse((child) => {
@@ -116,6 +123,8 @@ if (container) {
     });
 
     scene.add(model);
+
+    roomVisibleStates = roomTargets.map(() => true); // 最初は全部表示状態として記録
 
     /* ---- 部屋ごとの個別トグルを生成 ---- */
     const roomToggleList = document.getElementById('mapRoomToggleList');
@@ -225,6 +234,7 @@ if (container) {
 
   function setRoomsVisible(visible) {
     roomsVisible = visible;
+    roomVisibleStates = roomVisibleStates.map(() => visible);
 
     // 部屋本体をふわっとフェード
     roomMeshes.forEach((mesh) => {
@@ -239,6 +249,7 @@ if (container) {
   }
 
   function setRoomVisible(index, visible) {
+    roomVisibleStates[index] = visible;   // ← 追加: 状態を記録
     const mesh = roomMeshes[index];
     const label = roomLabelElements[index];
     if (mesh) animateOpacity(mesh.material, visible ? 0.85 : 0);
@@ -272,6 +283,7 @@ if (container) {
   let lastY = 0;
 
   function onPointerDown(e) {
+    if (e.touches && e.touches.length > 1) return; // 2本指の場合は回転操作を開始しない
     isDragging = true;
     lastX = (e.touches ? e.touches[0].clientX : e.clientX);
     lastY = (e.touches ? e.touches[0].clientY : e.clientY);
@@ -297,8 +309,56 @@ if (container) {
     isDragging = false;
     showHint();
     updateSimpleLabels();
-    roomLabelElements.forEach(({ el }) => el.classList.add('is-visible'));
+    roomLabelElements.forEach(({ el }, index) => {
+      el.classList.toggle('is-visible', roomVisibleStates[index]);   // ← 記録された状態に従う
+    });
   }
+
+  /* ---- マウスホイールでのズーム ---- */
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 1.08 : 0.92;
+    zoomFactor = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomFactor * delta));
+    radius = baseRadius * zoomFactor;
+    updateCamera();
+    updateSimpleLabels();   // ← 追加
+  }, { passive: false });
+
+  /* ---- スマホのピンチズーム ---- */
+  let pinchStartDist = null;
+  let pinchStartZoom = 1;
+
+  function getTouchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      isDragging = false; // 2本指の時は回転操作をキャンセル
+      pinchStartDist = getTouchDistance(e.touches);
+      pinchStartZoom = zoomFactor;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && pinchStartDist !== null) {
+      e.preventDefault();
+      const currentDist = getTouchDistance(e.touches);
+      const scale = pinchStartDist / currentDist;
+      zoomFactor = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pinchStartZoom * scale));
+      radius = baseRadius * zoomFactor;
+      updateCamera();
+      updateSimpleLabels();   // ← 追加
+    }
+  }, { passive: false });
+
+  container.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      pinchStartDist = null;
+    }
+  }, { passive: true });
 
   container.addEventListener('mousedown', onPointerDown);
   container.addEventListener('mousemove', onPointerMove);
@@ -335,22 +395,34 @@ if (container) {
   }
 
   /* ---- 全画面表示 ---- */
+  /* ---- 全画面表示 ---- */
   const fullscreenBtn = document.getElementById('mapFullscreenBtn');
 
   if (fullscreenBtn) {
     fullscreenBtn.addEventListener('click', () => {
       if (!document.fullscreenElement) {
-        if (container.requestFullscreen) {
-          container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) { // Safari対応
-          container.webkitRequestFullscreen();
-        }
+        const request = container.requestFullscreen
+          ? container.requestFullscreen()
+          : container.webkitRequestFullscreen && container.webkitRequestFullscreen();
+
+        // 全画面になったタイミングで、横向きに固定を試みる
+        Promise.resolve(request).then(() => {
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {
+              // 対応していない端末・ブラウザの場合は何もしない(エラーを無視)
+            });
+          }
+        });
+
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
         } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen();
         }
+        if (screen.orientation && screen.orientation.unlock) {
+          screen.orientation.unlock();
+      }
       }
     });
 

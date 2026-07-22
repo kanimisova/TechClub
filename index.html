@@ -856,14 +856,13 @@ body.modal-open{ overflow:hidden; }
   margin-right:auto;
 }
 .map-container{
-  position:relative;  /* ← 追加 */
+  position:relative;
   width:100%;
-  aspect-ratio:16/9;
+  aspect-ratio:16/10;
   border-radius:var(--radius-l);
   overflow:hidden;
   background:#05010f;
-  border:1px solid rgba(0,240,255,0.4);
-  box-shadow:0 0 24px rgba(0,240,255,0.15), inset 0 0 40px rgba(0,0,0,0.6);
+  border:1px solid var(--line);
   cursor:grab;
 }
 .map-container:active{ cursor:grabbing; }
@@ -901,9 +900,10 @@ body.modal-open{ overflow:hidden; }
 .map-label-simple{
   position:absolute;
   transform:translate(-50%, -50%);
-  font-size:12px;
+  font-size:16px;
+  font-weight:700;
   color:#fff;
-  text-shadow: 0 0 4px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6);
+  text-shadow: 0 0 5px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.7);
   white-space:nowrap;
   opacity:0;
   transition:opacity 0.4s ease;
@@ -1072,6 +1072,34 @@ body.modal-open{ overflow:hidden; }
   margin-top:10px;
 }
 
+/* スマホでのタップ時のハイライト・テキスト選択を無効化 */
+.map-container,
+.map-container *{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/* ボタン類は、フォーカス時の青い枠(アウトライン)も消す */
+.map-fullscreen-btn,
+.map-settings-btn,
+.map-toggle-row,
+.map-toggle{
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.map-fullscreen-btn:focus,
+.map-settings-btn:focus{
+  outline: none;
+}
+
+.map-fullscreen-btn:focus-visible,
+.map-settings-btn:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.6);
+}
+
 </style>
 </head>
 <body>
@@ -1101,9 +1129,9 @@ body.modal-open{ overflow:hidden; }
       <ul>
         <li><a href="#top" data-nav>TOP</a></li>
         <li><a href="#profile" data-nav>PROFILE</a></li>
-        <li><a href="#works" data-nav>EVENTS</a></li>
+        <li><a href="#works" data-nav>CONTENTS</a></li>
         <li><a href="#news" data-nav>NEWS</a></li>
-        <li><a href="#schedule" data-nav>TIMETABLE</a></li>
+        <li><a href="#schedule" data-nav>LINK</a></li>
       </ul>
       
     </nav>
@@ -1129,7 +1157,7 @@ body.modal-open{ overflow:hidden; }
       <span class="hero-title-jp">匠のその先へ</span>
       <span class="hero-title-en mono">技術家庭科部くすのき祭公式サイト</span>
     </h1>
-    <p class="hero-lead">ものづくりへの好奇心から始まる創作。<br>アイデアを形にするために考え、試し、失敗し、また挑戦する。作業に没頭する時間も、笑い合う時間も、すべてがかけがえのない青春。<br>ここに、「好き」を本気で追いかける仲間がいます。</p>
+    <p class="hero-lead">技術家庭科部くすのき祭公式サイトへようこそ！<br>ここでは主に技家部のくすのき祭展示の見どころや各種リンクを掲載しています。</p>
     <a href="#profile" class="scroll-down">
       <span>Scroll</span>
       <i></i>
@@ -1149,7 +1177,7 @@ body.modal-open{ overflow:hidden; }
           <li>工作班</li>
         </ul>
         <p class="profile-text">
-          技術家庭科部には「レゴ班」「鉄道班」「工作班」の3つの班があり、プログラミング、ロボット作り、鉄道模型、編み物、工作、お菓子作りなど様々な「ものづくり」をしています。
+          技術家庭科部には「レゴ班」「鉄道班」「工作班」の3つの班があり、普段はプログラミング、ロボット、鉄道、工作、編み物、お菓子作りなど様々な「ものづくり」をする活動をしています。
         </p>
 
         <!-- ▼ SNS等 各種リンクボタン(メイン) -->
