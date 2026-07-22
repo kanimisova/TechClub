@@ -1152,7 +1152,7 @@ body.modal-open{ overflow:hidden; }
     <div class="hero-deco" aria-hidden="true">
       <svg viewBox="0 0 200 200" class="hero-blob"><path d="M45,-59.4C57.6,-49.7,65.4,-33.6,68.7,-16.7C72,0.2,70.8,17.9,63.1,32.6C55.4,47.3,41.2,59,24.9,65.9C8.6,72.8,-9.8,74.8,-26.4,69.6C-43,64.4,-57.7,52,-65.8,36.4C-73.9,20.8,-75.4,2,-71.1,-14.9C-66.8,-31.8,-56.7,-46.8,-43,-56.6C-29.3,-66.4,-14.7,-71,1.6,-73.1C17.8,-75.2,35.5,-69.1,45,-59.4Z" transform="translate(100 100)"/></svg>
     </div>
-    <p class="eyebrow mono">TECHNOLOGY AND BUILDING CLUB OFFICIAL SITE</p>
+    <p class="eyebrow mono">TECHCLUB OFFICIAL SITE</p>
     <h1 class="hero-title">
       <span class="hero-title-jp">匠のその先へ</span>
       <span class="hero-title-en mono">技術家庭科部くすのき祭公式サイト</span>
@@ -1475,6 +1475,30 @@ const worksData = [
   },
 
   {
+    id: 'work-d',
+    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: '',
+    statusTimeline: [
+      { from: null, label: '' },
+    ],
+    title: '',
+    thumb: '',
+    meta: [
+      { label: '対象年齢', value: '' },
+      { label: 'ジャンル', value: '' },
+      { label: '開催場所', value: '' },
+    ],
+    leadCard: '',   // カード一覧(短め)
+    leadPopup: '',  // ポップアップ(長め)
+    gallery: [],
+    video: null,              // YouTube埋め込みURL。無ければnull
+    links: [
+      { label: '詳細はこちら', url: '#' }
+    ],
+    schedule: []
+  },
+
+  {
     id: 'work-',
     badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
     badgeText: '',
@@ -1497,6 +1521,32 @@ const worksData = [
     ],
     schedule: []
   },
+
+  {
+    id: 'work-',
+    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badgeText: '',
+    statusTimeline: [
+      { from: null, label: '' },
+    ],
+    title: '',
+    thumb: '',
+    meta: [
+      { label: '対象年齢', value: '' },
+      { label: 'ジャンル', value: '' },
+      { label: '開催場所', value: '' },
+    ],
+    leadCard: '',   // カード一覧(短め)
+    leadPopup: '',  // ポップアップ(長め)
+    gallery: [],
+    video: null,              // YouTube埋め込みURL。無ければnull
+    links: [
+      { label: '詳細はこちら', url: '#' }
+    ],
+    schedule: []
+  },
+
+  
   
   // ↓ 同じ形式で追加
 ];

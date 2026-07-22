@@ -63,15 +63,15 @@ if (container) {
 
     const roomTargets = [];
     const roomNameMap = {
-      '101': '3F Macルーム',
+      '104': 'Macルーム',
       '205': '第一体育館',
-      '305': '3F 3-5教室',
+      '105': '3-5教室',
     };
 
     model.traverse((child) => {
       if (!child.isMesh) return;
 
-      if (child.name.startsWith('Building_')) {
+      if (child.name.startsWith('Target_gray_')) {
         child.material = new THREE.MeshBasicMaterial({
           color: 0x000000,
           transparent: true,
@@ -83,9 +83,18 @@ if (container) {
         const edges = new THREE.EdgesGeometry(child.geometry, 30);
         const edgeLines = new THREE.LineSegments(
           edges,
-          new THREE.LineBasicMaterial({ color: 0x00F0FF })
+          new THREE.LineBasicMaterial({ color: 0xFFFFFF })
         );
         child.add(edgeLines);
+        
+      } else if (child.name.startsWith('Building_')) {
+        child.material = new THREE.MeshBasicMaterial({
+          color: 0xFFFFFF,
+          transparent: true,
+          opacity: 0.1,
+          depthWrite: false,
+        });
+        const key = child.name.replace('Target_gray_', '');
 
       } else if (child.name.startsWith('Target_Red_')) {
         child.material = new THREE.MeshBasicMaterial({
@@ -120,6 +129,7 @@ if (container) {
         roomTargets.push({ object: child, label: roomNameMap[key] || key });
         roomMeshes.push(child);   // ← 追加
       }
+      
     });
 
     scene.add(model);
