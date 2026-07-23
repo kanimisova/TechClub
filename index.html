@@ -9,7 +9,7 @@
 <meta name="description" content="技術家庭科部くすのき祭公式サイトです。展示紹介、各種リンクボタンを掲載しています。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet">
 <style>
 /* ===================================================================
    TOKENS
@@ -337,9 +337,11 @@ img{ max-width:100%; display:block; }
 .works-grid{
   margin-top:52px;
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));
-  gap:32px;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
 }
+@media (max-width:1000px){ .works-grid{ grid-template-columns:repeat(2, 1fr); } }
+@media (max-width:640px){ .works-grid{ grid-template-columns:repeat(2, 1fr); } }
 
 .work-card{
   position:relative;
@@ -347,7 +349,20 @@ img{ max-width:100%; display:block; }
   border:1px solid rgba(246,241,231,0.14);
   border-radius:var(--radius-l);
   overflow:hidden;
-  display:flex; flex-direction:column;
+  display:block;
+  cursor:pointer;
+  transition:transform 0.25s ease, border-color 0.25s ease;
+}
+.work-thumb{
+  position:relative;
+  aspect-ratio:3/2;
+  background:linear-gradient(160deg, rgba(246,241,231,0.1), rgba(246,241,231,0.02));
+  overflow:hidden;
+  line-height:0;
+}
+.work-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(246,241,231,0.35);
 }
 .work-badge{
   position:absolute; top:16px; left:16px; z-index:2;
@@ -355,11 +370,6 @@ img{ max-width:100%; display:block; }
 }
 .work-badge--new{ background:var(--coral); color:var(--ink); }
 .work-badge--released{ background:var(--gold); color:var(--ink); }
-.work-thumb{
-  aspect-ratio:16/9;
-  background:linear-gradient(160deg, rgba(246,241,231,0.1), rgba(246,241,231,0.02));
-  display:flex; align-items:center; justify-content:center;
-}
 .work-thumb .placeholder-label{ color:rgba(246,241,231,0.5); }
 .work-body{ padding:28px; display:flex; flex-direction:column; gap:14px; }
 .work-status{ font-size:11px; color:var(--gold); }
@@ -784,12 +794,6 @@ body.modal-open{ overflow:hidden; }
 
 .nowrap{ white-space:nowrap; }
 
-.work-tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin:6px 0 4px;
-}
 .tag-alert{
   display:inline-flex;
   align-items:center;
@@ -900,8 +904,9 @@ body.modal-open{ overflow:hidden; }
 .map-label-simple{
   position:absolute;
   transform:translate(-50%, -50%);
+  font-family:"Noto Sans JP", sans-serif;
   font-size:16px;
-  font-weight:700;
+  font-weight:900;
   color:#fff;
   text-shadow: 0 0 5px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.7);
   white-space:nowrap;
@@ -1100,6 +1105,59 @@ body.modal-open{ overflow:hidden; }
   outline: 2px solid rgba(255,255,255,0.6);
 }
 
+.hero-bg-fallback{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:none;
+}
+.hero-fallback-slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 1.8s ease;
+}
+.hero-fallback-slide.is-active{
+  opacity:0.45;
+}
+
+.work-card-footer{
+  padding:12px 14px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.work-card-meta-list{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.work-card-meta{
+  font-size:11px;
+  color:var(--paper);
+  display:flex;
+  gap:6px;
+  align-items:baseline;
+}
+.work-card-meta-label{
+  color:rgba(246,241,231,0.55);
+}
+.work-card-meta-value{
+  color:var(--paper);
+  font-weight:700;
+}
+
+.work-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
 </style>
 </head>
 <body>
@@ -1142,13 +1200,20 @@ body.modal-open{ overflow:hidden; }
 
   <section class="hero">
     <div class="hero-bg" id="heroBg" aria-hidden="true">
-      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--pc">
+      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--pc" id="heroVideoPc">
         <source src="assets/A1-pc.mp4" type="video/mp4">
       </video>
-      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--sp">
+      <video autoplay muted loop playsinline class="hero-bg-video hero-bg-video--sp" id="heroVideoSp">
         <source src="assets/A1-sp.mp4" type="video/mp4">
       </video>
-</div>
+      <div class="hero-bg-fallback" id="heroFallback">
+        <img src="assets/B1.png" alt="" class="hero-fallback-slide is-active">
+        <img src="assets/B2.png" alt="" class="hero-fallback-slide">
+        <img src="assets/B3.png" alt="" class="hero-fallback-slide">
+        <img src="assets/B4.png" alt="" class="hero-fallback-slide">
+        <img src="assets/B6.png" alt="" class="hero-fallback-slide">
+      </div>
+    </div>
     <div class="hero-deco" aria-hidden="true">
       <svg viewBox="0 0 200 200" class="hero-blob"><path d="M45,-59.4C57.6,-49.7,65.4,-33.6,68.7,-16.7C72,0.2,70.8,17.9,63.1,32.6C55.4,47.3,41.2,59,24.9,65.9C8.6,72.8,-9.8,74.8,-26.4,69.6C-43,64.4,-57.7,52,-65.8,36.4C-73.9,20.8,-75.4,2,-71.1,-14.9C-66.8,-31.8,-56.7,-46.8,-43,-56.6C-29.3,-66.4,-14.7,-71,1.6,-73.1C17.8,-75.2,35.5,-69.1,45,-59.4Z" transform="translate(100 100)"/></svg>
     </div>
@@ -1177,7 +1242,7 @@ body.modal-open{ overflow:hidden; }
           <li>工作班</li>
         </ul>
         <p class="profile-text">
-          技術家庭科部には「レゴ班」「鉄道班」「工作班」の3つの班があり、普段はプログラミング、ロボット、鉄道、工作、編み物、お菓子作りなど様々な「ものづくり」をする活動をしています。
+          技術家庭科部には「レゴ班」「鉄道班」「工作班」の3つの班があり、プログラミング、ロボット、鉄道、工作、編み物、お菓子作りなど様々な「ものづくり」をしています。
         </p>
 
         <!-- ▼ SNS等 各種リンクボタン(メイン) -->
@@ -1222,7 +1287,7 @@ body.modal-open{ overflow:hidden; }
   <div class="works-row works-row--navy">
     <div class="section-inner">
       <p class="eyebrow mono center">Events</p>
-      <h2 class="section-title center">くすのき祭展示紹介</h2>
+      <h2 class="section-title center">展示紹介</h2>
 
       <div class="works-grid" id="worksGrid"></div>
 
@@ -1362,7 +1427,7 @@ const worksData = [
       { from: '2026-10-18T13:00', label: '本日の整理券配布は終了しました。' },
 
     ],
-    title: '宇宙エレベーターロボットプログラミング講座',
+    title: '宇宙エレベーターロボット<br>プログラミング講座',
     titleDisplay: '宇宙エレベーターロボット<br>プログラミング講座',   // 表示用(改行OK)
     tags: ['整理券が必要です。'],              // 複数付けたい場合は ['要予約', '数量限定'] のように
     thumb: 'assets/宇宙エレ講座エンブレム.png',
@@ -1426,9 +1491,9 @@ const worksData = [
       { label: '開催場所', value: '第一体育館' },
     ],
     leadCard: '試行錯誤して作ったサッカーロボットで試合をします。選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
-    leadPopup: '試行錯誤して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください。',  // ポップアップ(長め)
-    gallery: ['assets/ロボサカ2.jpg', 'assets/ロボサカ1.jpg'],
-    video: null,              // YouTube埋め込みURL。無ければnull
+    leadPopup: '試行錯誤して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください！',  // ポップアップ(長め)
+    gallery: ['assets/ロボサカ1.jpg','assets/ロボサカ2.jpg'],
+    video: 'https://www.youtube.com/embed/nUkWyYdJyAM',              // YouTube埋め込みURL。無ければnull
     links: [
     ],
     schedule: [
@@ -1463,10 +1528,10 @@ const worksData = [
     meta: [
       { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '展示' },
-      { label: '開催場所', value: '3階 Macルーム' },
+      { label: '展示場所', value: '3階 Macルーム' },
     ],
     leadCard: '部員が作った作品を展示しています。',   // カード一覧(短め)
-    leadPopup: '主にレゴ班の部員が作ったレゴ作品を展示しています。組み立てやプログラムに工夫した作品を今年もたくさん展示しています。',  // ポップアップ(長め)
+    leadPopup: '主にレゴ班の部員が作ったレゴ作品を展示しています。組み立てやプログラムに工夫した作品が今年もたくさん集まりました。',  // ポップアップ(長め)
     gallery: ['assets/レゴ班作品展示.png'],
     video: null,              // YouTube埋め込みURL。無ければnull
     links: [
@@ -1484,9 +1549,9 @@ const worksData = [
     title: '',
     thumb: '',
     meta: [
-      { label: '対象年齢', value: '' },
+      { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '' },
+      { label: '開催場所', value: '3-5教室' },
     ],
     leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
@@ -1508,9 +1573,9 @@ const worksData = [
     title: '',
     thumb: '',
     meta: [
-      { label: '対象年齢', value: '' },
+      { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '' },
+      { label: '開催場所', value: '3-5教室' },
     ],
     leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
@@ -1532,9 +1597,9 @@ const worksData = [
     title: '',
     thumb: '',
     meta: [
-      { label: '対象年齢', value: '' },
+      { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '' },
+      { label: '開催場所', value: '3-5教室' },
     ],
     leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
@@ -1545,8 +1610,6 @@ const worksData = [
     ],
     schedule: []
   },
-
-  
   
   // ↓ 同じ形式で追加
 ];
@@ -1579,25 +1642,25 @@ function renderWorksGrid() {
   if (!grid) return;
 
   grid.innerHTML = worksData.map((item) => `
-    <article class="work-card">
+    <article class="work-card" data-window-target="${item.id}">
       ${item.badge ? `<span class="work-badge ${badgeClass(item.badge)} mono">${item.badgeText}</span>` : ''}
       <div class="work-thumb">
-        <a href="#" data-window-target="${item.id}">
-          <img src="${item.thumb}" alt="${item.title}のキービジュアル">
-        </a>
+        <img src="${item.thumb}" alt="${item.title}のキービジュアル">
       </div>
-      <div class="work-body">
-        <p class="work-status mono">${getCurrentStatus(item)}</p>
-        <h3 class="work-title">${item.titleDisplay || item.title}</h3>
-        <dl class="work-meta">
-          ${item.meta.slice(0, 4).map((m) => `<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`).join('')}
-        </dl>
+      <div class="work-card-footer">
+        ${item.meta && item.meta.length ? `
+          <div class="work-card-meta-list">
+            ${item.meta.map((m) => `
+              <div class="work-card-meta mono">
+                <span class="work-card-meta-label">${m.label}</span>
+                <span class="work-card-meta-value">${m.value}</span>
+              </div>
+            `).join('')}
+          </div>` : ''}
         ${item.tags && item.tags.length ? `
           <div class="work-tags">
             ${item.tags.map((t) => `<span class="tag-alert mono">${t}</span>`).join('')}
           </div>` : ''}
-        <p class="work-lead">${item.leadCard}</p>
-        <a href="#" class="link-btn link-btn--solid" data-window-target="${item.id}">詳細はこちら</a>
       </div>
     </article>
   `).join('');
@@ -1627,7 +1690,7 @@ function renderPopupContent(item) {
 
       ${item.schedule && item.schedule.length ? `
         <div class="popup-schedule">
-          <h4 class="widget-title mono">SCHEDULE</h4>
+          <h4 class="widget-title mono">TIMETABLE</h4>
           <div class="schedule-days">
             ${item.schedule.map((day) => `
               <div class="schedule-day">
@@ -1658,6 +1721,7 @@ function openWindowModal(workId) {
   if (!windowModal || !windowBody || !item) return;
 
   windowBody.innerHTML = renderPopupContent(item);
+  windowBody.scrollTop = 0;
   windowUrlLabel.textContent = `works/${item.title}`;
 
   windowModal.classList.add('is-open');
@@ -1668,17 +1732,78 @@ function openWindowModal(workId) {
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener noreferrer');
   });
+
+  // ▼ 追加: 「ポップアップが開いている」という状態を履歴に積む
+  history.pushState({ modalOpen: true }, '');
 }
 
-function closeWindowModal() {
+function closeWindowModal(skipHistoryBack) {
   if (!windowModal) return;
   windowModal.classList.remove('is-open');
   windowModal.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('modal-open');
+
+  // 「戻る」操作以外(✕ボタンやオーバーレイクリック)で閉じた場合は、積んだ履歴を1つ戻す
+  if (!skipHistoryBack && history.state && history.state.modalOpen) {
+    history.back();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   renderWorksGrid();   // ← これを追加
+
+  /* ---- 回線状況に応じて、動画 or 静止画を出し分ける ---- */
+  function shouldUseLightweightHero() {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+    if (connection) {
+      const slowTypes = ['slow-2g', '2g', '3g'];
+      if (slowTypes.includes(connection.effectiveType)) return true;
+      if (connection.saveData) return true;
+    }
+
+    if (window.innerWidth <= 640) return true;
+
+    return false;
+  }
+
+  function setupHeroBackground() {
+    const videoPc = document.getElementById('heroVideoPc');
+    const videoSp = document.getElementById('heroVideoSp');
+    const fallback = document.getElementById('heroFallback');
+    if (!fallback) return;
+
+    if (shouldUseLightweightHero()) {
+      if (videoPc) videoPc.remove();
+      if (videoSp) videoSp.remove();
+      fallback.style.display = 'block';
+      startFallbackSlideshow(fallback);
+    } else {
+      fallback.style.display = 'none';
+    }
+  }
+
+  function startFallbackSlideshow(fallback) {
+    const slides = fallback.querySelectorAll('.hero-fallback-slide');
+    if (slides.length <= 1) return; // 1枚しかなければ何もしない
+
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('is-active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('is-active');
+    }, 5000); // 5秒ごとに切り替え
+  }
+
+  setupHeroBackground();
+
+  // ブラウザの「戻る」操作を検知
+  window.addEventListener('popstate', () => {
+    if (windowModal.classList.contains('is-open')) {
+      closeWindowModal(true); // true = 履歴操作を重複させないためのフラグ
+    }
+  });
+
   /* ------------------------------------------------------------
      1. 背景の星フィールドを生成
   ------------------------------------------------------------ */
