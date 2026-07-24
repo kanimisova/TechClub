@@ -15,14 +15,14 @@
    TOKENS
 =================================================================== */
 :root{
-  --paper:      #F6F1E7; /* moon-cream: 背景 */
+  --paper:      #F6F1E7;
   --paper-soft: #EFE7D8;
-  --ink:        #1B1F3B; /* deep indigo: メインテキスト/濃色 */
+  --ink:        #1B1F3B;
   --ink-soft:   #454A6E;
-  --coral:      #F2795B; /* signature accent */
+  --coral:      #F2795B;
   --coral-deep: #D85E42;
-  --gold:       #E8C468; /* star gold */
-  --teal:       #4C7A80; /* 補助色 */
+  --gold:       #E8C468;
+  --teal:       #4C7A80;
   --line:       rgba(27,31,59,0.14);
 
   --font-display: "Zen Old Mincho", serif;
@@ -70,7 +70,7 @@ ul{ margin:0; padding:0; list-style:none; }
 img{ max-width:100%; display:block; }
 
 /* ===================================================================
-   装飾: 背景の星フィールド(signature element)
+   装飾: 背景
 =================================================================== */
 .star-field{
   position:fixed; inset:0;
@@ -381,7 +381,7 @@ img{ max-width:100%; display:block; }
 .work-card .link-btn--solid:hover{ background:var(--coral); border-color:var(--coral); color:var(--ink); }
 
 /* ===================================================================
-   NEWS / GOODS ウィジェット
+   NEWS
 =================================================================== */
 .widget-row{
   margin-top:52px;
@@ -466,7 +466,7 @@ img{ max-width:100%; display:block; }
 }
 
 /* ===================================================================
-   CTA (Contact / Shop)
+   CTA
 =================================================================== */
 .cta-grid{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
 @media (max-width:800px){ .cta-grid{ grid-template-columns:1fr; } }
@@ -1245,8 +1245,7 @@ body.modal-open{ overflow:hidden; }
 
         <!-- ▼ SNS等 各種リンクボタン(メイン) -->
         <div class="link-buttons" aria-label="公式リンク">
-          <a href="#" class="link-btn" data-external></span>X (Twitter)</a>
-          <a href="#" class="link-btn" data-external></span>Instagram</a>
+          <a href="https://www.instagram.com/p/DPSZz1HjPwc/" class="link-btn" data-external></span>Instagram</a>
           <a href="https://www.youtube.com/watch?v=gTEdGXhTDfI" class="link-btn" data-external></span>YouTube</a>
         </div>
 
@@ -1321,8 +1320,7 @@ body.modal-open{ overflow:hidden; }
       <div class="cta-links">
         <p class="eyebrow mono center">Link</p>
         <div class="link-buttons link-buttons--center">
-          <a href="#" class="link-btn" data-external></span>X (Twitter)</a>
-          <a href="#" class="link-btn" data-external></span>Instagram</a>
+          <a href="https://www.instagram.com/p/DPSZz1HjPwc/" class="link-btn" data-external></span>Instagram</a>
           <a href="https://www.youtube.com/watch?v=gTEdGXhTDfI" class="link-btn" data-external></span>YouTube</a>
         </div>
       </div>
@@ -1354,7 +1352,7 @@ body.modal-open{ overflow:hidden; }
     <nav class="footer-nav">
     </nav>
 
-    <p class="copyright mono">製作：技術家庭科部</p>
+    <p class="copyright mono">Kanimisova_VRC</p>
   </div>
 
   <!--<button class="to-top" id="toTop" aria-label="ページトップへ戻る">↑</button>-->
@@ -1481,17 +1479,15 @@ const worksData = [
       { from: '2026-10-18T10:30', label: '本日は終了しました。' },
     ],
     title: 'ロボットサッカー',
-    titleDisplay: 'ロボットサッカー',   // 表示用(改行OK)
     thumb: 'assets/ロボサカサムネ.png',
     meta: [
       { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '観戦' },
       { label: '開催場所', value: '第一体育館' },
     ],
-    leadCard: '試行錯誤して作ったサッカーロボットで試合をします。選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
     leadPopup: '試行錯誤して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください！',  // ポップアップ(長め)
     gallery: ['assets/ロボサカ1.png'],
-    video: null,              // YouTube埋め込みURL。無ければnull
+    video: null,
     links: [
     ],
     schedule: [
@@ -1516,7 +1512,7 @@ const worksData = [
 
   {
     id: 'work-c',
-    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
+    badge: 'null',
     badgeText: '',
     statusTimeline: [
       { from: null, label: '常設展示' },
@@ -1528,10 +1524,9 @@ const worksData = [
       { label: 'ジャンル', value: '展示' },
       { label: '展示場所', value: '3階 Macルーム' },
     ],
-    leadCard: '部員が作った作品を展示しています。',   // カード一覧(短め)
     leadPopup: '主にレゴ班の部員が作ったレゴ作品を展示しています。組み立てやプログラムに工夫した作品が今年もたくさん集まりました。',  // ポップアップ(長め)
     gallery: ['assets/レゴ班作品展示.png'],
-    video: null,              // YouTube埋め込みURL。無ければnull
+    video: null,
     links: [
     ],
     schedule: []
@@ -1551,10 +1546,9 @@ const worksData = [
       { label: 'ジャンル', value: '' },
       { label: '開催場所', value: '' },
     ],
-    leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
     gallery: ['assets/画像なし.png'],
-    video: null,              // YouTube埋め込みURL。無ければnull
+    video: null,
     links: [
       { label: '詳細はこちら', url: '#' }
     ],
@@ -1575,10 +1569,9 @@ const worksData = [
       { label: 'ジャンル', value: '' },
       { label: '開催場所', value: '' },
     ],
-    leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
     gallery: ['assets/画像なし.png'],
-    video: null,              // YouTube埋め込みURL。無ければnull
+    video: null,
     links: [
       { label: '詳細はこちら', url: '#' }
     ],

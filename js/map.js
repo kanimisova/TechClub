@@ -28,8 +28,8 @@ if (container) {
   const POLAR_MIN = 0.001;
   const POLAR_MAX = Math.PI / 2 - 0.05;
 
-  let baseRadius = 8;   // ← 追加: モデルサイズから計算される基準の距離
-  let zoomFactor = 1;    // ← 追加: ズームの倍率(1が標準)
+  let baseRadius = 8;   // モデルサイズから計算される基準の距離
+  let zoomFactor = 1;    // ズームの倍率(1が標準)
   const ZOOM_MIN = 0.4;   // どこまで寄れるか
   const ZOOM_MAX = 2.2;   // どこまで引けるか
 
@@ -43,8 +43,8 @@ if (container) {
 
   /* ---- ラベル用の変数(共通の場所で定義) ---- */
   let roomLabelElements = [];
-  let roomMeshes = [];   // ← 追加
-  let roomVisibleStates = [];   // ← 追加: 各部屋が「表示されるべきか」を記録
+  let roomMeshes = [];
+  let roomVisibleStates = [];   // 各部屋が「表示されるべきか」を記録
 
   /* ---- モデル読み込み ---- */
   const loader = new GLTFLoader();
@@ -105,7 +105,7 @@ if (container) {
         });
         const key = child.name.replace('Target_Red_', '');
         roomTargets.push({ object: child, label: roomNameMap[key] || key });
-        roomMeshes.push(child);   // ← 追加
+        roomMeshes.push(child);
 
       } else if (child.name.startsWith('Target_Blue_')) {
         child.material = new THREE.MeshBasicMaterial({
@@ -116,7 +116,7 @@ if (container) {
         });
         const key = child.name.replace('Target_Blue_', '');
         roomTargets.push({ object: child, label: roomNameMap[key] || key });
-        roomMeshes.push(child);   // ← 追加
+        roomMeshes.push(child);
 
       } else if (child.name.startsWith('Target_Green_')) {
         child.material = new THREE.MeshBasicMaterial({
@@ -127,7 +127,7 @@ if (container) {
         });
         const key = child.name.replace('Target_Green_', '');
         roomTargets.push({ object: child, label: roomNameMap[key] || key });
-        roomMeshes.push(child);   // ← 追加
+        roomMeshes.push(child);
       }
       
     });
@@ -168,8 +168,8 @@ if (container) {
         return { object: room.object, el };
       });
 
-      updateSimpleLabels();   // ← 追加: 初期位置を計算
-      roomLabelElements.forEach(({ el }) => el.classList.add('is-visible'));  // ← 追加: 最初から表示
+      updateSimpleLabels();
+      roomLabelElements.forEach(({ el }) => el.classList.add('is-visible'));
     }
 
     /* ---- ネオングリッド ---- */
@@ -259,7 +259,7 @@ if (container) {
   }
 
   function setRoomVisible(index, visible) {
-    roomVisibleStates[index] = visible;   // ← 追加: 状態を記録
+    roomVisibleStates[index] = visible;
     const mesh = roomMeshes[index];
     const label = roomLabelElements[index];
     if (mesh) animateOpacity(mesh.material, visible ? 0.85 : 0);
@@ -331,7 +331,7 @@ if (container) {
     zoomFactor = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomFactor * delta));
     radius = baseRadius * zoomFactor;
     updateCamera();
-    updateSimpleLabels();   // ← 追加
+    updateSimpleLabels();
   }, { passive: false });
 
   /* ---- スマホのピンチズーム ---- */
@@ -360,7 +360,7 @@ if (container) {
       zoomFactor = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, pinchStartZoom * scale));
       radius = baseRadius * zoomFactor;
       updateCamera();
-      updateSimpleLabels();   // ← 追加
+      updateSimpleLabels();
     }
   }, { passive: false });
 
@@ -419,7 +419,6 @@ if (container) {
         Promise.resolve(request).then(() => {
           if (screen.orientation && screen.orientation.lock) {
             screen.orientation.lock('landscape').catch(() => {
-              // 対応していない端末・ブラウザの場合は何もしない(エラーを無視)
             });
           }
         });
