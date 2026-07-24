@@ -9,7 +9,7 @@
 <meta name="description" content="技術家庭科部くすのき祭公式サイトです。展示紹介、各種リンクボタンを掲載しています。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 /* ===================================================================
    TOKENS
@@ -337,11 +337,9 @@ img{ max-width:100%; display:block; }
 .works-grid{
   margin-top:52px;
   display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:14px;
+  grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));
+  gap:32px;
 }
-@media (max-width:1000px){ .works-grid{ grid-template-columns:repeat(2, 1fr); } }
-@media (max-width:640px){ .works-grid{ grid-template-columns:repeat(2, 1fr); } }
 
 .work-card{
   position:relative;
@@ -904,9 +902,9 @@ body.modal-open{ overflow:hidden; }
 .map-label-simple{
   position:absolute;
   transform:translate(-50%, -50%);
-  font-family:"Noto Sans JP", sans-serif;
-  font-size:16px;
-  font-weight:900;
+  font-family:"Bebas Neue", sans-serif;
+  font-size:20px;
+  letter-spacing:0.04em;
   color:#fff;
   text-shadow: 0 0 5px rgba(0,0,0,0.95), 0 0 10px rgba(0,0,0,0.7);
   white-space:nowrap;
@@ -1435,7 +1433,7 @@ const worksData = [
       { label: '対象年齢', value: '小学校4~6年生' },
       { label: 'ジャンル', value: '体験講座' },
       { label: '開催場所', value: '3階 Macルーム' },
-      { label: '整理券配布場所', value: 'Macルーム前' },
+      { label: '整理券配布', value: 'Macルーム前' },
     ],
     leadCard: '生徒が教える初心者向けプログラミング講座です。',   // カード一覧(短め)
     leadPopup: '生徒が教えるプログラミング講座です。宇宙エレベーターのプログラミングを体験することができます。初めての方でも楽しめる講座です。',  // ポップアップ(長め)
@@ -1484,7 +1482,7 @@ const worksData = [
     ],
     title: 'ロボットサッカー',
     titleDisplay: 'ロボットサッカー',   // 表示用(改行OK)
-    thumb: 'assets/ロボサカサムネ.jpg',
+    thumb: 'assets/ロボサカサムネ.png',
     meta: [
       { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '観戦' },
@@ -1492,8 +1490,8 @@ const worksData = [
     ],
     leadCard: '試行錯誤して作ったサッカーロボットで試合をします。選手たちの熱い戦いにご注目ください。',   // カード一覧(短め)
     leadPopup: '試行錯誤して作ったサッカーロボットで試合をします。仲間と積み重ねた努力を発揮し、トーナメントを勝ち抜いたチームが栄冠を手にします。選手たちの熱い戦いにご注目ください！',  // ポップアップ(長め)
-    gallery: ['assets/ロボサカ1.png','assets/ロボサカ2.jpg'],
-    video: 'https://www.youtube.com/embed/nUkWyYdJyAM',              // YouTube埋め込みURL。無ければnull
+    gallery: ['assets/ロボサカ1.png'],
+    video: null,              // YouTube埋め込みURL。無ければnull
     links: [
     ],
     schedule: [
@@ -1524,7 +1522,7 @@ const worksData = [
       { from: null, label: '常設展示' },
     ],
     title: 'レゴ班作品展示',
-    thumb: 'assets/レゴ班作品展示.png',
+    thumb: 'assets/レゴ班作品展示サムネ.png',
     meta: [
       { label: '対象年齢', value: '全年齢' },
       { label: 'ジャンル', value: '展示' },
@@ -1547,15 +1545,15 @@ const worksData = [
       { from: null, label: '' },
     ],
     title: '',
-    thumb: '',
+    thumb: 'assets/画像なし.png',
     meta: [
-      { label: '対象年齢', value: '全年齢' },
+      { label: '対象年齢', value: '' },
       { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '3-5教室' },
+      { label: '開催場所', value: '' },
     ],
     leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
-    gallery: [],
+    gallery: ['assets/画像なし.png'],
     video: null,              // YouTube埋め込みURL。無ければnull
     links: [
       { label: '詳細はこちら', url: '#' }
@@ -1571,39 +1569,15 @@ const worksData = [
       { from: null, label: '' },
     ],
     title: '',
-    thumb: '',
+    thumb: 'assets/画像なし.png',
     meta: [
-      { label: '対象年齢', value: '全年齢' },
+      { label: '対象年齢', value: '' },
       { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '3-5教室' },
+      { label: '開催場所', value: '' },
     ],
     leadCard: '',   // カード一覧(短め)
     leadPopup: '',  // ポップアップ(長め)
-    gallery: [],
-    video: null,              // YouTube埋め込みURL。無ければnull
-    links: [
-      { label: '詳細はこちら', url: '#' }
-    ],
-    schedule: []
-  },
-
-  {
-    id: 'work-',
-    badge: 'null',            // 'new' / 'released' / 'live' / null(バッジなし)
-    badgeText: '',
-    statusTimeline: [
-      { from: null, label: '' },
-    ],
-    title: '',
-    thumb: '',
-    meta: [
-      { label: '対象年齢', value: '全年齢' },
-      { label: 'ジャンル', value: '' },
-      { label: '開催場所', value: '3-5教室' },
-    ],
-    leadCard: '',   // カード一覧(短め)
-    leadPopup: '',  // ポップアップ(長め)
-    gallery: [],
+    gallery: ['assets/画像なし.png'],
     video: null,              // YouTube埋め込みURL。無ければnull
     links: [
       { label: '詳細はこちら', url: '#' }
@@ -1646,21 +1620,6 @@ function renderWorksGrid() {
       ${item.badge ? `<span class="work-badge ${badgeClass(item.badge)} mono">${item.badgeText}</span>` : ''}
       <div class="work-thumb">
         <img src="${item.thumb}" alt="${item.title}のキービジュアル">
-      </div>
-      <div class="work-card-footer">
-        ${item.meta && item.meta.length ? `
-          <div class="work-card-meta-list">
-            ${item.meta.map((m) => `
-              <div class="work-card-meta mono">
-                <span class="work-card-meta-label">${m.label}</span>
-                <span class="work-card-meta-value">${m.value}</span>
-              </div>
-            `).join('')}
-          </div>` : ''}
-        ${item.tags && item.tags.length ? `
-          <div class="work-tags">
-            ${item.tags.map((t) => `<span class="tag-alert mono">${t}</span>`).join('')}
-          </div>` : ''}
       </div>
     </article>
   `).join('');

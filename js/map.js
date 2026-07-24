@@ -63,9 +63,9 @@ if (container) {
 
     const roomTargets = [];
     const roomNameMap = {
-      '104': 'Macルーム',
-      '205': '第一体育館',
-      '105': '3-5教室',
+      '104': 'MAC ROOM',
+      '205': 'GYM NO.1',
+      '105': 'CLASS 3-5',
     };
 
     model.traverse((child) => {
